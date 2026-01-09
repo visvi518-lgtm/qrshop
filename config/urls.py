@@ -7,4 +7,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.entry, name="entry"),
     path("order/", views.order_create, name="order_create"),
+    path("api/names/", views.name_suggestions),
+
 ]
