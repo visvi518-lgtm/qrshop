@@ -46,3 +46,17 @@ def export_orders_xlsx(request):
     resp["Content-Disposition"] = 'attachment; filename="orders.xlsx"'
     wb.save(resp)
     return resp
+
+from django.http import JsonResponse
+from .models import Order
+
+def name_suggestions(request):
+    q = request.GET.get("q", "")
+    names = (
+        Order.objects
+        .filter(name__icontains=q)
+        .values_list("name", flat=True)
+        .distinct()[:10]
+    )
+    return JsonResponse(list(names), safe=False)
+
