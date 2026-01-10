@@ -1,11 +1,13 @@
-# forms.py
+# orders/forms.py
+import re
 from django import forms
 from .models import Order
 
 PRODUCT_CHOICES = [
-    ("아메리카노", "아메리카노"),
-    ("카페라떼", "카페라떼"),
-    ("카푸치노", "카푸치노"),
+    ("레드향 5키로", "레드향 5키로"),
+    ("레드향 10키로", "레드향 10키로"),
+    ("천혜향 5키로", "천혜향 5키로"),
+    ("천혜향 10키로", "천혜향 10키로")
 ]
 
 class OrderForm(forms.ModelForm):
@@ -23,3 +25,16 @@ class OrderForm(forms.ModelForm):
             "address": "주소",
             "quantity": "수량",
         }
+    
+    def clean_phone(self):
+        raw = self.cleaned_data.get("phone", "")
+        digits = re.sub(r"\D", "", raw)
+
+        # 11자리(010xxxxxxxx) / 10자리(02xxxxxxx 등) 대응
+        if len(digits) == 11:
+            return f"{digits[:3]}-{digits[3:7]}-{digits[7:]}"
+        if len(digits) == 10:
+            return f"{digits[:3]}-{digits[3:6]}-{digits[6:]}"
+        raise forms.ValidationError("전화번호 형식이 올바르지 않습니다.")
+    
+    
