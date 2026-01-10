@@ -4,12 +4,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>주문</title>
 </head>
+
 <body style="font-family:system-ui; padding:16px; max-width:520px; margin:0 auto;">
   <h2>주문하기</h2>
+
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" style="padding:12px 14px;">주문 제출</button>
   </form>
+
+  <!-- ✅ 아래부터 추가 -->
+  <datalist id="name_list"></datalist>
+
+  <script>
+    // 이름 자동완성 (DB에서 추천 받아오기)
+    const nameInput = document.getElementById("id_name");
+    if (nameInput) {
+      nameInput.setAttribute("list", "name_list");
+
+      nameInput.addEventListener("input", async () => {
+        const q = nameInput.value.trim();
+        if (!q) return;
+
+        const res = await fetch(`/api/names/?q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+
+        document.getElementById("name_list").innerHTML =
+          data.map(n => `<option value="${n}"></option>`).join("");
+      });
+    }
+
+    // 전화번호 자동 하이픈 (00012341234 -> 000-1234-1234)
+    const phoneInput = document.getElementById("id_phone");
+    if (phoneInput) {
+
+      phoneInput.setAttribute("inputmode", "numeric");
+      phoneInput.setAttribute("autocomplate", "tell");
+
+      phoneInput.addEventListener("input", () => {
+        const d = phoneInput.value.replace(/\D/g, "").slice(0, 11);
+        let out = d;
+
+        if (d.length <= 3) out = d;
+        else if (d.length <= 7) out = `${d.slice(0,3)}-${d.slice(3)}`;
+        else out = `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
+
+        phoneInput.value = out;
+      });
+    }
+  </script>
+  <!-- ✅ 여기까지 추가 -->
+
 </body>
 </html>
