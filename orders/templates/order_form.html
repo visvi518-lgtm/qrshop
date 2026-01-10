@@ -37,22 +37,21 @@
 
     // 전화번호 자동 하이픈 (00012341234 -> 000-1234-1234)
     const phoneInput = document.getElementById("id_phone");
-    if (phoneInput) {
+  if (phoneInput) {
+    phoneInput.setAttribute("inputmode", "numeric");
+    phoneInput.setAttribute("autocomplete", "tel");
 
-      phoneInput.setAttribute("inputmode", "numeric");
-      phoneInput.setAttribute("autocomplate", "tell");
+    phoneInput.addEventListener("input", () => {
+      const d = phoneInput.value.replace(/\D/g, "").slice(0, 11);
+      let out = d;
 
-      phoneInput.addEventListener("input", () => {
-        const d = phoneInput.value.replace(/\D/g, "").slice(0, 11);
-        let out = d;
+      if (d.length <= 3) out = d;
+      else if (d.length <= 7) out = `${d.slice(0,3)}-${d.slice(3)}`;
+      else out = `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
 
-        if (d.length <= 3) out = d;
-        else if (d.length <= 7) out = `${d.slice(0,3)}-${d.slice(3)}`;
-        else out = `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
-
-        phoneInput.value = out;
-      });
-    }
+      phoneInput.value = out;
+    });
+  }
   </script>
   <!-- ✅ 여기까지 추가 -->
 
