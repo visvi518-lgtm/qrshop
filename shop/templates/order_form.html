@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>주문</title>
+  <style>
+    body{font-family:system-ui;margin:0;background:#f6f7fb;}
+    .wrap{max-width:520px;margin:0 auto;padding:18px;}
+    .card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.06);}
+    h2{margin:0 0 14px;}
+    .info{border:1px solid #eef0f4;border-radius:14px;padding:12px;margin-bottom:14px;}
+    .info b{font-size:16px;}
+    label{font-weight:700;display:block;margin-bottom:6px;}
+    select,input{width:100%;padding:12px 12px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;}
+    .total{margin-top:10px;padding:12px;border-radius:14px;background:#111827;color:#fff;display:flex;justify-content:space-between;align-items:center;}
+    .total .price{font-size:20px;font-weight:900;}
+    .btn{width:100%;padding:14px 16px;border:0;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;background:#16a34a;color:#fff;margin-top:14px;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>주문하기</h2>
+
+      <div class="info">
+        <div><b>{{ customer.name }}</b></div>
+        <div>{{ customer.phone }}</div>
+        <div>{{ customer.address }}</div>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <p>
+          {{ form.product.label_tag }}
+          {{ form.product }}
+        </p>
+
+        <p>
+          {{ form.quantity.label_tag }}
+          {{ form.quantity }}
+        </p>
+
+        <div class="total">
+          <div>총 금액</div>
+          <div class="price"><span id="total_price">0</span>원</div>
+        </div>
+
+        <button class="btn" type="submit">주문 제출</button>
+      </form>
+
+      <script>
+        const priceMap = {
+          "REDHYANG_5": 35000,
+          "REDHYANG_10": 60000,
+        };
+
+        const productEl = document.getElementById("id_product");
+        const qtyEl = document.getElementById("id_quantity");
+        const totalEl = document.getElementById("total_price");
+
+        function calc() {
+          const p = priceMap[productEl?.value] || 0;
+          const q = parseInt(qtyEl?.value || "0", 10);
+          totalEl.textContent = (p * q).toLocaleString();
+        }
+
+        if (productEl && qtyEl) {
+          productEl.addEventListener("change", calc);
+          qtyEl.addEventListener("input", calc);
+          calc();
+        }
+      </script>
+    </div>
+  </div>
+</body>
+</html>

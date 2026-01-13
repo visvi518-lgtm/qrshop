@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>내 주문 내역</title>
+</head>
+<body style="font-family:system-ui; padding:16px; max-width:520px; margin:0 auto;">
+  <h2>내 주문 내역</h2>
+
+  <div style="padding:12px; border:1px solid #eee; border-radius:12px; margin-bottom:14px;">
+    <div><b>{{ customer.name }}</b></div>
+    <div>{{ customer.phone }}</div>
+    <div>{{ customer.address }}</div>
+  </div>
+
+  {% if orders %}
+    {% for o in orders %}
+      <div style="padding:12px; border:1px solid #eee; border-radius:12px; margin:10px 0;">
+        <div><b>{{ o.get_product_display }}</b> x{{ o.quantity }}</div>
+        <div>총 금액: {{ o.total_price }}원</div>
+        <div style="color:#666; font-size:14px;">{{ o.created_at }}</div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>주문 내역이 없습니다.</p>
+  {% endif %}
+
+  <p style="margin-top:14px;">
+    <a href="/order/new/" style="text-decoration:none;">다시 주문하기</a>
+  </p>
+</body>
+</html>

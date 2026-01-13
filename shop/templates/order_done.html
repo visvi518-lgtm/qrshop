@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>주문 완료</title>
+  <style>
+    body{font-family:system-ui;margin:0;background:#f6f7fb;}
+    .wrap{max-width:520px;margin:0 auto;padding:18px;}
+    .card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.06);}
+    h2{margin:0 0 10px;}
+    .box{border:1px solid #eef0f4;border-radius:14px;padding:12px;margin-top:12px;}
+    .strong{font-weight:900;font-size:20px;}
+    .muted{color:#6b7280;margin-top:6px;}
+    .btn{display:block;text-align:center;padding:14px 16px;border-radius:12px;text-decoration:none;font-weight:900;margin-top:14px;background:#111827;color:#fff;}
+    hr{border:none;border-top:1px solid #eef0f4;margin:12px 0;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>주문 완료</h2>
+      <div class="muted"><b>{{ customer.name }}</b> 님 주문이 접수되었습니다.</div>
+
+      <div class="box">
+        <div>제품: <b>{{ order.get_product_display }}</b></div>
+        <div>수량: <b>{{ order.quantity }}</b></div>
+        <hr>
+        <div class="strong">총 금액: {{ order.total_price }}원</div>
+        <div class="muted">아래 계좌로 입금해 주세요.</div>
+        <div style="margin-top:10px;"><b>국민 123-456-789012 (예금주)</b></div>
+      </div>
+
+      <a class="btn" href="/my-orders/">내 주문 내역 확인</a>
+    </div>
+  </div>
+</body>
+</html>

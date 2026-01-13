@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>고객 확인</title>
+  <style>
+    body{font-family:system-ui;margin:0;background:#f6f7fb;}
+    .wrap{max-width:520px;margin:0 auto;padding:18px;}
+    .card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.06);}
+    h2{margin:0 0 14px;}
+    h3{margin:18px 0 10px;}
+    .item{border:1px solid #eef0f4;border-radius:14px;padding:12px;margin:10px 0;}
+    .row{color:#374151;margin-top:4px;}
+    .btn{width:100%;padding:12px 14px;border:0;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;background:#111827;color:#fff;margin-top:10px;}
+    .btn-green{background:#16a34a;}
+    label{font-weight:700;display:block;margin-bottom:6px;}
+    input,textarea{width:100%;padding:12px 12px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;}
+    textarea{min-height:84px;resize:vertical;}
+    .hint{color:#6b7280;font-size:14px;margin-top:6px;}
+    hr{border:none;border-top:1px solid #eef0f4;margin:16px 0;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>고객 확인: {{ name }}</h2>
+
+      {% if matches %}
+        <h3>기존 고객 선택</h3>
+        <div class="hint">아래 정보 중 본인 것을 선택하세요.</div>
+
+        {% for c in matches %}
+          <form method="post" class="item">
+            {% csrf_token %}
+            <div><b>{{ c.name }}</b></div>
+            <div class="row">전화: {{ c.phone }}</div>
+            <div class="row">주소: {{ c.address }}</div>
+            <input type="hidden" name="selected_customer_id" value="{{ c.id }}">
+            <button class="btn" type="submit">이 정보로 진행</button>
+          </form>
+        {% endfor %}
+        <hr>
+      {% else %}
+        <div class="hint">기존 고객이 없습니다. 아래에 신규 정보를 입력해주세요.</div>
+      {% endif %}
+
+      <h3>신규 고객 입력</h3>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="create_new" value="1">
+        {{ cform.as_p }}
+        <button class="btn btn-green" type="submit">신규로 진행</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

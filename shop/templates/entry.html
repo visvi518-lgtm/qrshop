@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entry</title>
+  <title>접속 선택</title>
   <style>
     body{font-family:system-ui;margin:0;display:grid;place-items:center;height:100vh;background:#f5f5f5;}
     .card{width:min(92vw,420px);background:white;border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.08);}
@@ -14,8 +14,19 @@
 <body>
   <div class="card">
     <h2>접속 선택</h2>
+
+    <a class="btn user" href="/order/">주문</a>
+    <div style="height:12px;"></div>
+
     <a class="btn admin" href="/admin/">관리자</a>
-    <a class="btn user" href="/order/">주문자</a>
+
+    {% if is_staff %}
+      <hr style="margin:16px 0; border:none; border-top:1px solid #eee;">
+      <a class="btn admin" href="/admin-tools/customers.xlsx">고객 엑셀 다운로드</a>
+      <a class="btn admin" href="/admin-tools/customers/import/">고객 엑셀 업로드</a>
+      <a class="btn admin" href="/admin-tools/orders.xlsx">주문 엑셀 다운로드</a>
+    {% endif %}
+
   </div>
 </body>
 </html>

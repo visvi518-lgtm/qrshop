@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>이름 확인</title>
+  <style>
+    body{font-family:system-ui;margin:0;background:#f6f7fb;}
+    .wrap{max-width:520px;margin:0 auto;padding:18px;}
+    .card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.06);}
+    h2{margin:0 0 14px;}
+    label{font-weight:700;display:block;margin-bottom:6px;}
+    input{width:100%;padding:12px 12px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;}
+    .btn{width:100%;padding:14px 16px;border:0;border-radius:12px;font-weight:800;font-size:16px;cursor:pointer;background:#16a34a;color:#fff;margin-top:12px;}
+    .muted{color:#6b7280;font-size:14px;margin-top:10px;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>이름 확인</h2>
+      <form method="post">
+        {% csrf_token %}
+        <p>
+          {{ form.name.label_tag }}
+          {{ form.name }}
+        </p>
+        <button class="btn" type="submit">확인</button>
+      </form>
+      <div class="muted">이름을 입력하면 기존 고객 여부를 확인합니다.</div>
+    </div>
+  </div>
+</body>
+</html>

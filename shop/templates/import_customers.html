@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>고객 엑셀 업로드</title>
+</head>
+<body style="font-family:system-ui; padding:16px; max-width:520px; margin:0 auto;">
+  <h2>고객 엑셀 업로드</h2>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file" accept=".xlsx" required>
+    <br><br>
+    <button type="submit" style="padding:12px 14px;">업로드</button>
+  </form>
+
+  <p style="margin-top:14px; color:#555;">
+    엑셀 컬럼 순서: <b>name | phone | address</b>
+  </p>
+</body>
+</html>
