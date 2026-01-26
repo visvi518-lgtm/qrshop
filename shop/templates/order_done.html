@@ -24,7 +24,14 @@
       <div class="box">
         <div>제품: <b>{{ order.get_product_display }}</b></div>
         <div>수량: <b>{{ order.quantity }}</b></div>
+
         <hr>
+
+        <div>받는분: <b>{{ order.receiver_name }}</b> ({{ order.receiver_phone }})</div>
+        <div>주소: {{ order.receiver_address }}</div>
+
+        <hr>
+
         <div class="strong">총 금액: {{ order.total_price }}원</div>
         <div class="muted">아래 계좌로 입금해 주세요.</div>
         <div style="margin-top:10px;"><b>국민 123-456-789012 (예금주)</b></div>

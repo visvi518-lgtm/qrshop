@@ -30,16 +30,7 @@
 
       <form method="post">
         {% csrf_token %}
-
-        <p>
-          {{ form.product.label_tag }}
-          {{ form.product }}
-        </p>
-
-        <p>
-          {{ form.quantity.label_tag }}
-          {{ form.quantity }}
-        </p>
+        {{ form.as_p }}
 
         <div class="total">
           <div>총 금액</div>
@@ -48,6 +39,7 @@
 
         <button class="btn" type="submit">주문 제출</button>
       </form>
+
 
       <script>
         const priceMap = {

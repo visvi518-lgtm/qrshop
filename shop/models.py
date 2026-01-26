@@ -7,6 +7,21 @@ class Customer(models.Model):
 
     def __str__(self):
         return f"{self.name} / {self.phone}"
+    
+class Receiver(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="receivers")
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=30)
+    address = models.TextField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["customer", "name", "phone"], name="uniq_receiver_per_customer")
+        ]
+
+    def __str__(self):
+        return f"{self.customer.name} -> {self.name} / {self.phone}"
+
 
 
 class Order(models.Model):
@@ -24,8 +39,13 @@ class Order(models.Model):
     }
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    receiver_name = models.CharField(max_length=50, blank=True, default="")
+    receiver_phone = models.CharField(max_length=30, blank=True, default="")
+    receiver_address = models.TextField(blank=True, default="")
+
     product = models.CharField(max_length=20, choices=PRODUCT_CHOICES)
     quantity = models.PositiveIntegerField(default=1)
+
     unit_price = models.PositiveIntegerField(default=0)
     total_price = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

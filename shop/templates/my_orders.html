@@ -3,30 +3,44 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>내 주문 내역</title>
+  <style>
+    body{font-family:system-ui;margin:0;background:#f6f7fb;}
+    .wrap{max-width:520px;margin:0 auto;padding:18px;}
+    .card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.06);}
+    h2{margin:0 0 14px;}
+    .info{border:1px solid #eef0f4;border-radius:14px;padding:12px;margin-bottom:14px;}
+    .item{border:1px solid #eef0f4;border-radius:14px;padding:12px;margin:10px 0;}
+    .muted{color:#6b7280;font-size:14px;margin-top:6px;}
+    .btn{display:block;text-align:center;padding:14px 16px;border-radius:12px;text-decoration:none;font-weight:900;margin-top:14px;background:#111827;color:#fff;}
+  </style>
 </head>
-<body style="font-family:system-ui; padding:16px; max-width:520px; margin:0 auto;">
-  <h2>내 주문 내역</h2>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>내 주문 내역</h2>
 
-  <div style="padding:12px; border:1px solid #eee; border-radius:12px; margin-bottom:14px;">
-    <div><b>{{ customer.name }}</b></div>
-    <div>{{ customer.phone }}</div>
-    <div>{{ customer.address }}</div>
-  </div>
-
-  {% if orders %}
-    {% for o in orders %}
-      <div style="padding:12px; border:1px solid #eee; border-radius:12px; margin:10px 0;">
-        <div><b>{{ o.get_product_display }}</b> x{{ o.quantity }}</div>
-        <div>총 금액: {{ o.total_price }}원</div>
-        <div style="color:#666; font-size:14px;">{{ o.created_at }}</div>
+      <div class="info">
+        <div><b>{{ customer.name }}</b></div>
+        <div>{{ customer.phone }}</div>
+        <div>{{ customer.address }}</div>
       </div>
-    {% endfor %}
-  {% else %}
-    <p>주문 내역이 없습니다.</p>
-  {% endif %}
 
-  <p style="margin-top:14px;">
-    <a href="/order/new/" style="text-decoration:none;">다시 주문하기</a>
-  </p>
+      {% if orders %}
+        {% for o in orders %}
+          <div class="item">
+            <div><b>{{ o.get_product_display }}</b> x{{ o.quantity }}</div>
+            <div class="muted">받는분: {{ o.receiver_name }} ({{ o.receiver_phone }})</div>
+            <div class="muted">주소: {{ o.receiver_address }}</div>
+            <div style="margin-top:8px; font-weight:900;">총 금액: {{ o.total_price }}원</div>
+            <div class="muted">{{ o.created_at }}</div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>주문 내역이 없습니다.</p>
+      {% endif %}
+
+      <a class="btn" href="/order/new/">다시 주문하기</a>
+    </div>
+  </div>
 </body>
 </html>

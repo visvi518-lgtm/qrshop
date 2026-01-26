@@ -22,8 +22,29 @@ class CustomerForm(forms.ModelForm):
         raise forms.ValidationError("전화번호 형식이 올바르지 않습니다.")
     
 class OrderForm(forms.ModelForm):
+    
     class Meta:
         model = Order
-        fields = ["product", "quantity"]
-        labels = {"product": "제품", "quantity": "수량"}
+        fields = [
+            "receiver_name",
+            "receiver_phone",
+            "receiver_address",
+            "product",
+            "quantity",
+        ]
+        labels = {
+            "receiver_name": "받는분 이름",
+            "receiver_phone": "받는분 전화번호",
+            "receiver_address": "받는분 주소",
+            "product": "제품",
+            "quantity": "수량",
+        }
 
+        def clean_receiver_phone(self):
+            raw = self.cleaned_data.get("receiver_phone", "")
+            digits = re.sub(r"\D", "", raw)
+            if len(digits) == 11:
+                return f"{digits[:3]}-{digits[3:7]}-{digits[7:]}"
+            if len(digits) == 10:
+                return f"{digits[:3]}-{digits[3:6]}-{digits[6:]}"
+            raise forms.ValidationError("전화번호 형식이 올바르지 않습니다.")

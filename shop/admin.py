@@ -1,10 +1,20 @@
 from django.contrib import admin
-from .models import Customer, Order
+from .models import Customer, Receiver, Order
+
+class ReceiverInline(admin.TabularInline):
+    model = Receiver
+    extra = 0
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ("name", "phone", "address")
     search_fields = ("name", "phone")
+    inlines = [ReceiverInline]
+
+@admin.register(Receiver)
+class ReceiverAdmin(admin.ModelAdmin):
+    list_display = ("customer", "name", "phone", "address")
+    search_fields = ("name", "phone", "customer__name", "customer__phone")
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
