@@ -7,6 +7,15 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 
 
+FORMULA_PREFIXES = ("=", "+", "-", "@")
+
+
+def excel_safe(value):
+    if isinstance(value, str) and value.lstrip().startswith(FORMULA_PREFIXES):
+        return f"'{value}"
+    return value
+
+
 def entry(request):
     return render(request, "entry.html", {
         "is_staff": request.user.is_authenticated and request.user.is_staff
@@ -151,9 +160,16 @@ def export_customers_xlsx(request):
         receivers = Receiver.objects.filter(customer=c).order_by("name", "phone")
         if receivers.exists():
             for r in receivers:
-                ws.append([c.name, c.phone, c.address, r.name, r.phone, r.address])
+                ws.append([
+                    excel_safe(c.name),
+                    excel_safe(c.phone),
+                    excel_safe(c.address),
+                    excel_safe(r.name),
+                    excel_safe(r.phone),
+                    excel_safe(r.address),
+                ])
         else:
-            ws.append([c.name, c.phone, c.address, "", "", ""])
+            ws.append([excel_safe(c.name), excel_safe(c.phone), excel_safe(c.address), "", "", ""])
 
     resp = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -180,12 +196,12 @@ def export_orders_xlsx(request):
     for o in Order.objects.select_related("customer").order_by("-created_at"):
         ws.append([
             o.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            o.customer.name,
-            o.customer.phone,
-            o.receiver_name,
-            o.receiver_phone,
-            o.receiver_address,
-            o.get_product_display(),
+            excel_safe(o.customer.name),
+            excel_safe(o.customer.phone),
+            excel_safe(o.receiver_name),
+            excel_safe(o.receiver_phone),
+            excel_safe(o.receiver_address),
+            excel_safe(o.get_product_display()),
             o.quantity,
             o.unit_price,
             o.total_price,

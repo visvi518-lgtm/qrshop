@@ -49,7 +49,15 @@
 
         const productEl = document.getElementById("id_product");
         const qtyEl = document.getElementById("id_quantity");
+        const phoneEl = document.getElementById("id_receiver_phone");
         const totalEl = document.getElementById("total_price");
+
+        if (phoneEl) {
+          phoneEl.inputMode = "tel";
+          phoneEl.addEventListener("input", () => {
+            phoneEl.value = phoneEl.value.replace(/[^\d-]/g, "");
+          });
+        }
 
         function calc() {
           const p = priceMap[productEl?.value] || 0;
@@ -58,6 +66,8 @@
         }
 
         if (productEl && qtyEl) {
+          qtyEl.min = "1";
+          qtyEl.inputMode = "numeric";
           productEl.addEventListener("change", calc);
           qtyEl.addEventListener("input", calc);
           calc();

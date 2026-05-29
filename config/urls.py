@@ -13,5 +13,4 @@ urlpatterns = [
     path("admin-tools/customers.xlsx", views.export_customers_xlsx, name="export_customers_xlsx"),
     path("admin-tools/customers/import/", views.import_customers_xlsx, name="import_customers_xlsx"),
     path("admin-tools/orders.xlsx", views.export_orders_xlsx, name="export_orders_xlsx"),
-
 ]

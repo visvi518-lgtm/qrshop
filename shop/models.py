@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 class Customer(models.Model):
@@ -44,7 +45,7 @@ class Order(models.Model):
     receiver_address = models.TextField(blank=True, default="")
 
     product = models.CharField(max_length=20, choices=PRODUCT_CHOICES)
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
 
     unit_price = models.PositiveIntegerField(default=0)
     total_price = models.PositiveIntegerField(default=0)
